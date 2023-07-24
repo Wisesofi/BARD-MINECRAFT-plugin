@@ -1,0 +1,47 @@
+package me.bard.plugin;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+public class BardPlugin implements CommandExecutor {
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+
+            if (args.length == 0) {
+                player.sendMessage(ChatColor.RED + "Usage: /bard <command>");
+                return true;
+            }
+
+            String commandName = args[0];
+
+            if (commandName.equals("help")) {
+                player.sendMessage(ChatColor.YELLOW + "Available commands:");
+                player.sendMessage(ChatColor.YELLOW + "  /bard mine for diamond");
+                player.sendMessage(ChatColor.YELLOW + "  /bard build a house");
+                player.sendMessage(ChatColor.YELLOW + "  /bard kill the creeper");
+            } else if (commandName.equals("mine for diamond")) {
+                player.sendMessage(ChatColor.YELLOW + "Mining for diamond...");
+                Bukkit.getScheduler().runTaskLater(this, () -> player.sendMessage(ChatColor.GREEN + "Found a diamond!"), 20 * 5);
+            } else if (commandName.equals("build a house")) {
+                player.sendMessage(ChatColor.YELLOW + "Building a house...");
+                Bukkit.getScheduler().runTaskLater(this, () -> player.sendMessage(ChatColor.GREEN + "House built!"), 20 * 10);
+            } else if (commandName.equals("kill the creeper")) {
+                player.sendMessage(ChatColor.YELLOW + "Looking for a creeper...");
+                Bukkit.getScheduler().runTaskLater(this, () -> player.sendMessage(ChatColor.GREEN + "Creeper killed!"), 20 * 15);
+            } else {
+                player.sendMessage(ChatColor.RED + "Unknown command: " + commandName);
+            }
+        } else {
+            sender.sendMessage("This command can only be used by players.");
+        }
+
+        return true;
+    }
+}
